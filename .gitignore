@@ -20,8 +20,10 @@ configure
 depcomp
 *.lo
 *.la
+*.o
 install-sh
 libtool
 ltmain.sh
 missing
 stamp-h1
+ref-ptr

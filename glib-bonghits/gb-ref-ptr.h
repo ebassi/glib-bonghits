@@ -9,15 +9,18 @@
 
 G_BEGIN_DECLS
 
-gpointer        gb_ref_ptr_alloc        (gsize           alloc_size,
-                                         GDestroyNotify  notify);
-gpointer        gb_ref_ptr_acquire      (gpointer        ref_pointer);
-void            gb_ref_ptr_release      (gpointer        ref_pointer);
+gpointer        gb_ref_ptr_alloc                (gsize           alloc_size);
+gpointer        gb_ref_ptr_alloc_with_notify    (gsize           alloc_size,
+                                                 GDestroyNotify  notify);
+gpointer        gb_ref_ptr_dup                  (gconstpointer   data,
+                                                 gsize           alloc_size);
+gpointer        gb_ref_ptr_acquire              (gpointer        ref_pointer);
+void            gb_ref_ptr_release              (gpointer        ref_pointer);
 
 /* private */
 G_GNUC_INTERNAL
-void            gb_ref_ptr_free         (gpointer        ref_pointer,
-                                         gboolean        run_notify);
+void            gb_ref_ptr_free                 (gpointer        ref_pointer,
+                                                 gboolean        run_notify);
 
 G_END_DECLS
 

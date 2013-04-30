@@ -14,7 +14,7 @@ ref_ptr_base (void)
 {
   Rect *r;
 
-  r = gb_ref_ptr_alloc (sizeof (Rect), NULL);
+  r = gb_ref_ptr_alloc (sizeof (Rect));
   r->origin.x = 100.f;
   r->origin.y = 100.f;
   r->size.width = 50.f;
@@ -43,7 +43,7 @@ ref_ptr_notify (void)
 {
   Rect *r;
 
-  r = gb_ref_ptr_alloc (sizeof (Rect), rect_notify);
+  r = gb_ref_ptr_alloc_with_notify (sizeof (Rect), rect_notify);
   r->origin.x = 100.f;
   r->origin.y = 100.f;
   r->size.width = 50.f;

@@ -23,6 +23,60 @@ struct _GbRefPtr
 /**
  * gb_ref_ptr_alloc:
  * @alloc_size: the size of the memory allocation
+ *
+ * Allocates (and clears) a reference counted region of memory, and returns
+ * a pointer to it.
+ *
+ * References can be acquired using gb_ref_ptr_acquire(), and released using
+ * gb_ref_ptr_release().
+ *
+ * Once the last reference has been released, the memory region is
+ * deallocated. If the memory region contains allocated memory, you should
+ * use gb_ref_ptr_alloc_with_notify() and provide a function to be called
+ * when the memory region is deallocated.
+ *
+ * Return value: (transfer full): the newly allocated, reference counted,
+ *   memory region.
+ */
+gpointer
+gb_ref_ptr_alloc (gsize alloc_size)
+{
+  return gb_ref_ptr_alloc_with_notify (alloc_size, NULL);
+}
+
+/**
+ * gb_ref_ptr_dup:
+ * @data: data to copy
+ * @alloc_size: size of @data
+ *
+ * Allocates a reference counted region of memory, copies @alloc_size bytes of
+ * the passed @data, and returns a pointer to it.
+ *
+ * References can be acquired using gb_ref_ptr_acquire(), and released using
+ * gb_ref_ptr_release().
+ *
+ * See also: gb_ref_ptr_alloc().
+ *
+ * Return value: (transfer full): the newly allocated, reference counted,
+ *   memory region.
+ */
+gpointer
+gb_ref_ptr_dup (gconstpointer data,
+                gsize         alloc_size)
+{
+  gpointer res;
+
+  g_return_val_if_fail (data != NULL && alloc_size > 0, NULL);
+
+  res = gb_ref_ptr_alloc (alloc_size);
+  memcpy (res, data, alloc_size);
+
+  return res;
+}
+
+/**
+ * gb_ref_ptr_alloc_with_notify:
+ * @alloc_size: the size of the memory allocation
  * @notify: a function to be called when the reference count reaches zero
  *
  * Allocates (and clears) a reference counted region of memory, and returns
@@ -39,8 +93,8 @@ struct _GbRefPtr
  *   memory region.
  */
 gpointer
-gb_ref_ptr_alloc (gsize          alloc_size,
-                  GDestroyNotify notify)
+gb_ref_ptr_alloc_with_notify (gsize          alloc_size,
+                              GDestroyNotify notify)
 {
   GbRefPtr *ref_pointer;
   gsize private_size;

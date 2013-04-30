@@ -80,7 +80,7 @@ gb_static_string_new (const char *str)
   res = g_hash_table_lookup (interned_strings, str);
   if (res == NULL)
     {
-      res = gb_ref_ptr_alloc (len + 1, release_interned_string);
+      res = gb_ref_ptr_alloc_with_notify (len + 1, release_interned_string);
       memcpy (res, str, len);
       res[len] = '\0';
 

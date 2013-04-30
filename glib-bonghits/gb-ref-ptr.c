@@ -54,6 +54,10 @@ gb_ref_ptr_alloc (gsize          alloc_size,
    * and we use it to point to the beginning of the allocation, so that valgrind
    * doesn't get confused, and thinks that we're leaking the preamble that we use
    * to store the reference count
+   *
+   * this nifty trick is taken from gtype.c in GObject, and it's what GType uses
+   * to overallocate the instance structure to make space for the instance private
+   * data structure in a valgrind-safe manner.
    */
   if (RUNNING_ON_VALGRIND)
     {

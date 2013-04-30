@@ -14,6 +14,11 @@ gpointer        gb_ref_ptr_alloc        (gsize           alloc_size,
 gpointer        gb_ref_ptr_acquire      (gpointer        ref_pointer);
 void            gb_ref_ptr_release      (gpointer        ref_pointer);
 
+/* private */
+G_GNUC_INTERNAL
+void            gb_ref_ptr_free         (gpointer        ref_pointer,
+                                         gboolean        run_notify);
+
 G_END_DECLS
 
 #endif /* __GB_REF_POINTER_H__ */

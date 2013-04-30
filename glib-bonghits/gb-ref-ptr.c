@@ -83,27 +83,28 @@ gb_ref_ptr_alloc (gsize          alloc_size,
 
 /*< private >
  * gb_ref_ptr_free:
- * @data: reference counted memory area to be freed
+ * @ref_pointer: reference counted memory area to be freed
  *
  * Releases the resources associated with @data.
  *
  * This function calls GbRefPtr.notify, if one is present.
  */
-static void
-gb_ref_ptr_free (gpointer data)
+void
+gb_ref_ptr_free (gpointer ref_pointer,
+                 gboolean run_notify)
 {
   gsize private_size = sizeof (GbRefPtr);
-  GbRefPtr *ref_pointer;
+  GbRefPtr *ref;
   gchar *allocated;
   gsize alloc_size;
 
-  ref_pointer = (GbRefPtr *) (((gchar *) data) - private_size);
-  alloc_size = ref_pointer->alloc_size;
+  ref = (GbRefPtr *) (((gchar *) ref_pointer) - private_size);
+  alloc_size = ref->alloc_size;
 
-  if (ref_pointer->notify != NULL)
-    ref_pointer->notify (data);
+  if (run_notify && ref->notify != NULL)
+    ref->notify (ref_pointer);
 
-  allocated = ((gchar *) data) - private_size;
+  allocated = ((gchar *) ref_pointer) - private_size;
 
   /* see gb_ref_ptr_alloc() */
   if (RUNNING_ON_VALGRIND)
@@ -115,10 +116,10 @@ gb_ref_ptr_free (gpointer data)
       g_slice_free1 (private_size + alloc_size + sizeof (gpointer), allocated);
 
       VALGRIND_FREELIKE_BLOCK (allocated + ALIGN_STRUCT (1), 0);
-      VALGRIND_FREELIKE_BLOCK (data, 0);
+      VALGRIND_FREELIKE_BLOCK (ref_pointer, 0);
     }
   else
-    g_slice_free1 (private_size + ref_pointer->alloc_size, allocated);
+    g_slice_free1 (private_size + ref->alloc_size, allocated);
 }
 
 /**
@@ -162,5 +163,5 @@ gb_ref_ptr_release (gpointer ref_pointer)
   ref = (GbRefPtr *) (((gchar *) ref_pointer) - sizeof (GbRefPtr));
 
   if (g_atomic_int_dec_and_test (&ref->ref_count))
-    gb_ref_ptr_free (ref_pointer);
+    gb_ref_ptr_free (ref_pointer, TRUE);
 }

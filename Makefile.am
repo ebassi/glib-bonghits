@@ -20,6 +20,7 @@ EXTRA_DIST += \
 	autogen.sh \
 	build/autotools/as-compiler-flag.m4 \
 	build/autotools/Makefile-gtest.am \
+	glib-bonghits/tests/Makefile-tests.am \
 	$(NULL)
 
 AM_CPPFLAGS = \
@@ -61,13 +62,4 @@ gbinclude_HEADERS = $(source_public_h) $(top_srcdir)/glib-bonghits/glib-bonghits
 # tests
 noinst_PROGRAMS += $(TEST_PROGS)
 tests_ldadd = libglib-bonghits-0.la $(GB_LIBS)
-
-ref_ptr_SOURCES = glib-bonghits/tests/ref-ptr.c
-ref_ptr_LDADD = $(tests_ldadd)
-TEST_PROGS += ref-ptr
-
-static_string_SOURCES = glib-bonghits/tests/static-string.c
-static_string_LDADD = $(tests_ldadd)
-TEST_PROGS += static-string
-
--include $(top_srcdir)/build/autotools/Makefile-gtest.am
+include $(top_srcdir)/glib-bonghits/tests/Makefile-tests.am

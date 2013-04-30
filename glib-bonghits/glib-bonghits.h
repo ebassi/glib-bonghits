@@ -8,6 +8,7 @@
 #define __GLIB_BONGHITS_H_INSIDE__
 
 #include <glib-bonghits/gb-ref-ptr.h>
+#include <glib-bonghits/gb-static-string.h>
 
 #undef __GLIB_BONGHITS_H_INSIDE__
 

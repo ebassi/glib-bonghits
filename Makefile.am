@@ -37,6 +37,7 @@ AM_CFLAGS = $(GB_CFLAGS) $(MAINTAINER_CFLAGS) $(GB_GCOV_CFLAGS)
 # main library
 source_public_h = \
 	glib-bonghits/gb-ref-ptr.h \
+	glib-bonghits/gb-static-string.h \
 	$(NULL)
 
 source_private_h = \
@@ -45,6 +46,7 @@ source_private_h = \
 
 source_c = \
 	glib-bonghits/gb-ref-ptr.c \
+	glib-bonghits/gb-static-string.c \
 	$(NULL)
 
 lib_LTLIBRARIES += libglib-bonghits-0.la
@@ -62,5 +64,9 @@ tests_ldadd = libglib-bonghits-0.la $(GB_LIBS)
 ref_ptr_SOURCES = glib-bonghits/tests/ref-ptr.c
 ref_ptr_LDADD = $(tests_ldadd)
 TEST_PROGS += ref-ptr
+
+static_string_SOURCES = glib-bonghits/tests/static-string.c
+static_string_LDADD = $(tests_ldadd)
+TEST_PROGS += static-string
 
 -include $(top_srcdir)/build/autotools/Makefile-gtest.am

@@ -27,3 +27,4 @@ ltmain.sh
 missing
 stamp-h1
 ref-ptr
+static-string

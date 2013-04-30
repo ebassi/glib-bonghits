@@ -41,6 +41,7 @@ source_public_h = \
 	$(NULL)
 
 source_private_h = \
+	glib-bonghits/gconstructor.h \
 	glib-bonghits/valgrind.h \
 	$(NULL)
 

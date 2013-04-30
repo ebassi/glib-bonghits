@@ -1,7 +1,9 @@
 #include "config.h"
 
 #include "gb-static-string.h"
+
 #include "gb-ref-ptr.h"
+#include "gconstructor.h"
 
 #include <string.h>
 
@@ -20,6 +22,29 @@ release_interned_string (gpointer data)
 
   G_UNLOCK (interned_strings);
 }
+
+static void
+release_all_interned_strings (void)
+{
+  if (interned_strings != NULL)
+    {
+      GHashTableIter iter;
+      gpointer key;
+
+      g_hash_table_iter_init (&iter, interned_strings);
+      while (g_hash_table_iter_next (&iter, key, NULL))
+        gb_ref_ptr_free (key, FALSE);
+
+      g_hash_table_unref (interned_strings);
+    }
+}
+
+#ifdef G_HAS_CONSTRUCTORS
+#ifdef G_DEFINE_DESTRUCTOR_NEEDS_PRAGMA
+#pragma G_DEFINE_DESTRUCTOR_PRAGMA_ARGS(release_all_interned_strings)
+#endif
+G_DEFINE_DESTRUCTOR(release_all_interned_strings)
+#endif /* G_HAS_CONSTRUCTORS */
 
 /**
  * gb_static_string_new:

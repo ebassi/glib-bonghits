@@ -32,7 +32,7 @@ release_all_interned_strings (void)
       gpointer key;
 
       g_hash_table_iter_init (&iter, interned_strings);
-      while (g_hash_table_iter_next (&iter, key, NULL))
+      while (g_hash_table_iter_next (&iter, &key, NULL))
         gb_ref_ptr_free (key, FALSE);
 
       g_hash_table_unref (interned_strings);

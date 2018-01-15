@@ -1,9 +1,0 @@
-ref_ptr_SOURCES = glib-bonghits/tests/ref-ptr.c
-ref_ptr_LDADD = $(tests_ldadd)
-TEST_PROGS += ref-ptr
-
-static_string_SOURCES = glib-bonghits/tests/static-string.c
-static_string_LDADD = $(tests_ldadd)
-TEST_PROGS += static-string
-
--include $(top_srcdir)/build/autotools/Makefile-gtest.am

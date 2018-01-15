@@ -212,7 +212,7 @@ gb_ref_ptr_release (gpointer ref_pointer)
 {
   GbRefPtr *ref;
 
-  g_return_val_if_fail (ref_pointer != NULL, NULL);
+  g_return_if_fail (ref_pointer != NULL);
 
   ref = (GbRefPtr *) (((gchar *) ref_pointer) - sizeof (GbRefPtr));
 
